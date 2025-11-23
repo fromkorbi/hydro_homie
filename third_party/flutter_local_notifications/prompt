@@ -1,0 +1,79 @@
+I am building a Flutter app called "Hydro Homie".
+
+Goal:
+A personal hydration tracker that replaces the HydroCoach app. The app should be simple, offline-first, and use a clean, modular architecture.
+
+Tech stack:
+- Flutter
+- Dart
+- State management: Provider (ChangeNotifier)
+- Local storage: shared_preferences
+- Local notifications: flutter_local_notifications (Android focus)
+- Target platform: Android only for now
+
+Non-functional preferences:
+- No comments in the generated code.
+- Clean, readable, strongly typed Dart.
+- Small focused classes instead of god objects.
+
+App requirements:
+
+1) Hydration tracking
+- Track daily water intake in milliliters.
+- User can set a custom daily hydration goal (e.g. 2500 ml).
+- Show current daily progress as absolute value and percentage.
+- Show a simple "traffic light" system for hydration level:
+  - red: low hydration (e.g. < 40%)
+  - yellow: medium hydration
+  - green: goal reached or above
+- Persist today's intake locally so it survives app restarts.
+
+2) Drinks and logging
+- User can log different drink types with different default sizes (e.g. water 250 ml, tea 200 ml, etc.).
+- Ability to define custom drink sizes in the future (design for extensibility).
+- Show favorite drink types at the top of the list.
+- Logging a drink should be possible with a single tap for common sizes.
+
+3) Reminders and notifications
+- Periodic drink reminder via local notification.
+- Notification must:
+  - be visible on the lock screen
+  - appear in the notification shade
+  - when tapped, open the app directly to the drink logging screen
+- Optional future extension: log a drink directly from the notification action.
+
+4) Persistent status notification (optional / later):
+- Option to show a persistent notification (ongoing) with the current hydration status.
+- For example: "1500 / 2500 ml • 60% • yellow".
+- Tapping this notification also opens the main screen.
+
+Architecture goals:
+- Feature-based folder structure.
+- Separate layers: domain, application (state), infrastructure (storage, notifications), presentation (UI).
+- Keep all hydration-related logic inside a "hydration" feature module.
+
+Please:
+1. Propose a folder structure under lib/ for this app.
+2. Define the key domain models (e.g. DrinkType, DrinkEntry, AppSettings, HydrationStatus).
+3. Define a HydrationState (ChangeNotifier) or similar that:
+   - holds the current settings and today's entries
+   - calculates daily total, percentage and traffic-light status
+   - knows how to add a drink, reset today, and change the daily target
+   - interacts with repositories for storage
+4. Define repository interfaces and simple implementations using shared_preferences for:
+   - app settings
+   - today's drink entries (by date key)
+5. Sketch the main UI structure:
+   - Home screen with:
+     - progress (text + bar)
+     - hydration traffic light state
+     - list of today's drinks
+     - buttons for quick-logging favorite drinks
+   - a simple settings screen for changing the daily target (and later reminder interval).
+6. Provide the main.dart wiring:
+   - create repositories
+   - create HydrationState
+   - wrap MaterialApp in ChangeNotifierProvider
+   - set HomePage as the start screen.
+
+Start by writing the folder structure and the core Dart classes and state wiring. Remember: no comments in the code. Focus on the architecture and clean separation of responsibilities, not UI polishing.
